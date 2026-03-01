@@ -23,6 +23,14 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["src/workers/ml.worker.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "src/workers/ml.worker.ts",
+    "node_modules",
+    "dist",
+    ".vercel"
+  ]
 }
