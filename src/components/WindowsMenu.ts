@@ -237,13 +237,10 @@ export class WindowsMenu {
         row.className = `windows-row${pinned ? ' windows-row-pinned' : ''}`;
         row.setAttribute('data-panel-id', panelId);
 
-        const checkboxId = `wm-win-cb-${panelId}`;
-
         row.innerHTML = `
-      <label class="windows-row-label" for="${checkboxId}" ${!hideable ? 'title="Core module cannot be hidden" style="cursor: not-allowed; opacity: 0.7;"' : ''}>
+      <div class="windows-row-label" ${!hideable ? 'title="Core module cannot be hidden" style="cursor: not-allowed; opacity: 0.7;"' : ''}>
         <input
           type="checkbox"
-          id="${checkboxId}"
           class="windows-row-checkbox"
           data-panel="${panelId}"
           ${visible ? 'checked' : ''}
@@ -251,7 +248,7 @@ export class WindowsMenu {
         >
         <span class="windows-row-checkmark"></span>
         <span class="windows-row-name">${name}</span>
-      </label>
+      </div>
       <button
         class="windows-pin-btn${pinned ? ' pinned' : ''}"
         data-panel="${panelId}"
@@ -260,28 +257,19 @@ export class WindowsMenu {
       >${pinned ? '📌' : '📍'}</button>
     `;
 
-        // Checkbox → toggle visibility
-        const cb = row.querySelector<HTMLInputElement>('input[type=checkbox]');
-        cb?.addEventListener('change', (e) => {
-            const checked = (e.target as HTMLInputElement).checked;
-            windowsManager.setVisible(panelId, checked);
-            this.updateFooter();
-        });
+        const cb = row.querySelector<HTMLInputElement>('.windows-row-checkbox');
 
-        // Row click → toggle visibility (if hideable and not clicking pin button)
+        // Row click → toggle visibility
         row.addEventListener('click', (e) => {
             const target = e.target as HTMLElement;
-            // If clicking pin button or its contents, don't toggle visibility
+            // If clicking pin button or its contents, stop
             if (target.closest('.windows-pin-btn')) return;
 
-            // If we didn't click the checkbox or label directly (which handles its own toggle),
-            // we manually toggle it.
-            if (hideable && !target.closest('.windows-row-checkbox') && !target.closest('.windows-row-label')) {
-                if (cb) {
-                    cb.checked = !cb.checked;
-                    windowsManager.setVisible(panelId, cb.checked);
-                    this.updateFooter();
-                }
+            if (hideable && cb) {
+                const newVisible = !cb.checked;
+                cb.checked = newVisible;
+                windowsManager.setVisible(panelId, newVisible);
+                this.updateFooter();
             }
         });
 
@@ -290,7 +278,6 @@ export class WindowsMenu {
             e.stopPropagation();
             const newPinned = !windowsManager.getState(panelId).pinned;
             windowsManager.setPinned(panelId, newPinned);
-            // syncRow will be called by the manager's onChange subscriber
         });
 
         return row;
