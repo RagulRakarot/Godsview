@@ -383,6 +383,7 @@ export class CountryIntelManager implements AppModule {
       displacementOutflow: ciiData?.displacementOutflow ?? 0,
       climateStress: ciiData?.climateStress ?? 0,
       conflictEvents: ciiData?.conflicts?.length ?? 0,
+      gpsJammingHexes: 0,
       isTier1,
     };
   }

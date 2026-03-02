@@ -177,9 +177,14 @@ const allLayersEnabled: MapLayers = {
   speciesRecovery: false,
   renewableInstallations: false,
   tradeRoutes: true,
+  iranAttacks: true,
+  gpsJamming: true,
+  dayNight: true,
 };
 
 const allLayersDisabled: MapLayers = {
+  iranAttacks: false,
+  gpsJamming: false,
   conflicts: false,
   bases: false,
   cables: false,
@@ -221,6 +226,7 @@ const allLayersDisabled: MapLayers = {
   speciesRecovery: false,
   renewableInstallations: false,
   tradeRoutes: false,
+  dayNight: false,
 };
 
 const SEEDED_NEWS_LOCATIONS: Array<{
