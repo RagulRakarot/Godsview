@@ -298,6 +298,11 @@ export function validateSecret(key: RuntimeSecretKey, value: string): { valid: b
     return { valid: true };
   }
 
+  if (key === 'UC_DP_KEY') {
+    if (trimmed.length < 16) return { valid: false, hint: 'API key must be at least 16 characters' };
+    return { valid: true };
+  }
+
   return { valid: true };
 }
 
